@@ -8,6 +8,8 @@ setup(name='YourAppName', version='1.0',
       #  Uncomment one or more lines below in the install_requires section
       #  for the specific client drivers/modules your application needs.
       install_requires=['greenlet', 'gevent',
+            # include binary protocol memcached client lib
+            'python-binary-memcached',
                         #  'MySQL-python',
                         #  'pymongo',
                         #  'psycopg2',
