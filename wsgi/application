@@ -17,7 +17,7 @@ def application(environ, start_response):
 	status = '200 OK'
 	components = environ['PATH_INFO'].strip('/').split('/')
 
-	if len(components) == 0;
+	if len(components) == 0:
 		# haproxy pings us with HEAD /
 		response_body = ''
 	elif len(components) == 1 and components[0] == '/health':
