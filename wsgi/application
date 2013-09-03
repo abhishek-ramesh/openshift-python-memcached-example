@@ -17,10 +17,7 @@ def application(environ, start_response):
 	status = '200 OK'
 	components = environ['PATH_INFO'].strip('/').split('/')
 
-	if len(components) == 0:
-		# haproxy pings us with HEAD /
-		response_body = ''
-	elif len(components) == 1 and components[0] == '/health':
+	if len(components) == 1 and components[0] == '/health':
 		response_body = 'UP'
 	elif len(components) == 2:
 		action, name = components
@@ -36,7 +33,7 @@ def application(environ, start_response):
 		client.set(name)
 		response_body = 'OK'
 	else:
-		status, response_body = '404 Not Found', 'Valid URLs:\n  /set/{name}/{value}\n  /get/{name}\n'
+		response_body = 'Valid URLs:\n  /set/{name}/{value}\n  /get/{name}\n'
 
 	response_headers = [('Content-Type', 'text/plain'), ('Content-Length', str(len(response_body)))]
 	start_response(status, response_headers)
