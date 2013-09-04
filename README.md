@@ -1,3 +1,1 @@
-The OpenShift `python` cartridge documentation can be found at:
-
-https://github.com/openshift/origin-server/tree/master/cartridges/openshift-origin-cartridge-python/README.md
+Este é o repositório para uma aplicação de exemplo, utilizada [neste blog post](http://getupcloud.com/blog/novo-cartridge-memcached).
