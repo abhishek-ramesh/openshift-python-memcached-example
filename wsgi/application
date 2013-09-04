@@ -3,24 +3,19 @@ import os
 import bmemcached
 
 def connect():
-	try:
-		# read memcached connection parameters from environment
-		memcached_endpoint = '%s:%s' % (os.environ['OPENSHIFT_MEMCACHED_HOST'], os.environ['OPENSHIFT_MEMCACHED_PORT'])
-		memcached_username = os.environ['OPENSHIFT_MEMCACHED_USERNAME']
-		memcached_password = os.environ['OPENSHIFT_MEMCACHED_PASSWORD']
+	# read memcached connection parameters from environment
+	memcached_endpoint = '%s:%s' % (os.environ['OPENSHIFT_MEMCACHED_HOST'], os.environ['OPENSHIFT_MEMCACHED_PORT'])
+	memcached_username = os.environ['OPENSHIFT_MEMCACHED_USERNAME']
+	memcached_password = os.environ['OPENSHIFT_MEMCACHED_PASSWORD']
 
-		# connect to memcached
-		client = bmemcached.Client((memcached_endpoint,), memcached_username, memcached_password)
-	except KeyError:
-		client = None
+	# connect to memcached
+	return bmemcached.Client((memcached_endpoint,), memcached_username, memcached_password)
 
 def application(environ, start_response):
 	status = '200 OK'
 	components = environ['PATH_INFO'].strip('/').split('/')
 
-	if len(components) == 1 and components[0] == '/health':
-		response_body = 'UP'
-	elif len(components) == 2:
+	if len(components) == 2:
 		action, name = components
 		assert action == 'get'
 
