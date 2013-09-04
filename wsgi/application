@@ -2,16 +2,17 @@
 import os
 import bmemcached
 
-try:
-	# read memcached connection parameters from environment
-	memcached_endpoint = '%s:%s' % (os.environ['OPENSHIFT_MEMCACHED_HOST'], os.environ['OPENSHIFT_MEMCACHED_PORT'])
-	memcached_username = os.environ['OPENSHIFT_MEMCACHED_USERNAME']
-	memcached_password = os.environ['OPENSHIFT_MEMCACHED_PASSWORD']
+def connect():
+	try:
+		# read memcached connection parameters from environment
+		memcached_endpoint = '%s:%s' % (os.environ['OPENSHIFT_MEMCACHED_HOST'], os.environ['OPENSHIFT_MEMCACHED_PORT'])
+		memcached_username = os.environ['OPENSHIFT_MEMCACHED_USERNAME']
+		memcached_password = os.environ['OPENSHIFT_MEMCACHED_PASSWORD']
 
-	# connect to memcached
-	client = bmemcached.Client((memcached_endpoint,), memcached_username, memcached_password)
-except KeyError:
-	client = None
+		# connect to memcached
+		client = bmemcached.Client((memcached_endpoint,), memcached_username, memcached_password)
+	except KeyError:
+		client = None
 
 def application(environ, start_response):
 	status = '200 OK'
@@ -24,14 +25,18 @@ def application(environ, start_response):
 		assert action == 'get'
 
 		# read key value
+		client = connect()
 		response_body = client.get(name)
+		client.disconnect_all()
 	elif len(components) == 3:
 		action, name, value = components
 		assert action == 'set'
 
 		# save key value
+		client = connect()
 		client.set(name, value)
-		response_body = 'OK'
+		client.disconnect_all()
+		response_body = 'OK\n'
 	else:
 		response_body = 'Valid URLs:\n  /set/{name}/{value}\n  /get/{name}\n'
 
