@@ -30,7 +30,7 @@ def application(environ, start_response):
 		assert action == 'set'
 
 		# save key value
-		client.set(name)
+		client.set(name, value)
 		response_body = 'OK'
 	else:
 		response_body = 'Valid URLs:\n  /set/{name}/{value}\n  /get/{name}\n'
