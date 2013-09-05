@@ -14,6 +14,7 @@ def connect():
 def application(environ, start_response):
 	status = '200 OK'
 	components = environ['PATH_INFO'].strip('/').split('/')
+	gear_id = os.environ['OPENSHIFT_GEAR_UUID']
 
 	if len(components) == 2:
 		action, name = components
@@ -21,7 +22,8 @@ def application(environ, start_response):
 
 		# read key value
 		client = connect()
-		response_body = client.get(name)
+		value = client.get(name)
+		response_body = '%s (gear-id=%s)\n' % (value, gear_id)
 		client.disconnect_all()
 	elif len(components) == 3:
 		action, name, value = components
@@ -31,7 +33,7 @@ def application(environ, start_response):
 		client = connect()
 		client.set(name, value)
 		client.disconnect_all()
-		response_body = 'OK\n'
+		response_body = 'OK (gear-id=%s)\n' % gear_id
 	else:
 		response_body = 'Valid URLs:\n  /set/{name}/{value}\n  /get/{name}\n'
 
