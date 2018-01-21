@@ -3,12 +3,12 @@ import imp
 import os
 import sys
 
-'''try:
-   zvirtenv = os.path.join(os.environ['OPENSHIFT_PYTHON_DIR'],
-                           'virtenv', 'bin', 'activate_this.py')
-   execfile(zvirtenv, dict(__file__ = zvirtenv) )
-except IOError:
-   pass'''
+#try:
+   #zvirtenv = os.path.join(os.environ['OPENSHIFT_PYTHON_DIR'],
+    #                       'virtenv', 'bin', 'activate_this.py')
+   #execfile(zvirtenv, dict(__file__ = zvirtenv) )
+#except IOError:
+ #  pass
 
 
 def run_gevent_server(app, ip, port=8080):
